@@ -183,6 +183,10 @@ background-color: gray;
 {
  padding: 1vw;
 }
+.modalMargin
+{
+ margin: 1vw;
+}
 
 
 .orangeBorder
@@ -196,6 +200,12 @@ background-color: gray;
  border-color:rgb(161,195,81);
  border-width: 5px;
  border-style: solid;
+}
+.Green{
+ background-color: #9fc151;
+}
+.Orange{
+ background-color: #ed8b21;
 }
 
 .infoPanel
@@ -223,12 +233,6 @@ textarea
 {
  resize: none;
 }
-.textField
-{
- display: flex;
- flex-direction: column;
-}
-
 .day
 {
  text-align: center;
@@ -248,8 +252,15 @@ textarea
   color: #808080;
   text-decoration: none;
  font-size: 18px;
+}
+
+.DragDown
+{
+ position:absolute;
+bottom:0px;
 
 }
+
 @media (min-width: 425px) {
  .modal
  {
@@ -283,4 +294,10 @@ textarea
 .Table::-webkit-scrollbar-thumb {
  background:#808080;
  border-radius: 10px;
+}
+.ActieButton
+{
+ border-radius: 10px;
+ border: none;
+ padding: 10px;
 }

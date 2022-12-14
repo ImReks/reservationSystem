@@ -36,16 +36,18 @@ mysqli_close($db);
     <h1>Maak afspraak met <?=$teacher?></h1>
     <form action="index.php" method="post" id="1">
         <div class="infoPanel">
-            <div class="textField">
+            <div class="FlexRow">
                 <label for="email">Contact mail</label>
+                <div>
                 <input type="email" id="email" name="email" value="">
                 <p style="color: red" id="emailMessage"></p>
+                </div>
             </div>
         </div>
-        <div class="textField">
+        <div class="FlexColum">
             <label for="description">Rede voor afspraak</label>
 
-            <textarea name="description" id="description" placeholder="Schrijf hier waarom u een afspraak wil maken"> </textarea>
+            <textarea name="description" id="description" placeholder="Schrijf hier waarom u een afspraak wil maken" rows="20" cols="70"> </textarea>
         </div>
         <input type="hidden" name="id" value="<?=$id?>">
         <input type="hidden" name="day" value="<?=$day?>">
@@ -53,8 +55,10 @@ mysqli_close($db);
 
 
     </form>
-    <button onclick="formmodalSubmitForm(1)">maak afspraak</button>
+
 </div>
+<button class="DragDown ActieButton modalMargin Green" onclick="formmodalSubmitForm(1)">maak afspraak</button>
 </body>
+
 </html>
 

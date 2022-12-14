@@ -137,13 +137,14 @@ else
 <body>
 <script src="JS/ModalPopUp.js"></script>
 <script src="JS/DropSubmit.js"></script>
+<div onclick="DisableModal()" id="modalBackground" class="modalBackground"></div>
+<div id="infoModal" class="modal orangeBorder"></div>
+<div id="formModal" class="modal greenBorder"></div>
 <header>
     <a href="https://www.devosvlaardingen.nl/" id="HeaderLogo" class="logo header-logo"></a>
     <div class="bannerPane"></div>
 </header>
-<div onclick="DisableModal()" id="modalBackground" class="modalBackground"></div>
-<div id="infoModal" class="modal orangeBorder"></div>
-<div id="formModal" class="modal greenBorder"></div>
+
 
 
 

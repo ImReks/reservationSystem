@@ -30,15 +30,15 @@ mysqli_close($db);
 <div class="modalPadding">
 <h1>Afspraak met <?=$teacher?></h1>
 <div class="infoPanel">
-<div class="textField">
+<div class="FlexColum">
     <h2>Datum</h2>
     <p><?=""?></p>
 </div>
-<div class="textField">
+<div class="FlexColum">
     <h2>Time</h2>
     <p><?=$time?></p>
 </div>
-<div class="textField">
+<div class="FlexColum">
     <h2>Student</h2>
     <p><?=""?></p>
 </div>
@@ -51,7 +51,8 @@ mysqli_close($db);
 <form action="index.php" method="post">
     <input type="hidden" name="id" value="<?=$id?>">
     <input type="hidden" name="day" value="<?=$day?>">
-    <input type="submit" value="cancel" name="cancel">
+    <input class="DragDown ActieButton modalMargin Orange" type="submit" value="cancel" name="cancel">
+
 </form>
 </body>
 </html>
