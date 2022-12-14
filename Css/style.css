@@ -1,0 +1,273 @@
+*
+{
+ margin: 0px;
+ padding: 0px;
+ font-family: 'Montserrat', sans-serif;
+}
+.Center
+{
+ display: flex;
+ /*background-color: red;*/
+ margin-top: 2vh;
+ border-radius: 10px;
+ margin-left: auto;
+ margin-right: auto;
+ width: Calc(80px + 50vw);
+ box-shadow: 0px 0px 10px 0px rgb(0 0 0 / 50%);
+}
+
+.FlexColum
+{
+ display:flex;
+ flex-direction: column;
+ align-items: flex-start;
+ justify-items:center;
+}
+.FlexRow
+{
+ display:flex;
+ flex-direction: row;
+ align-items: flex-start;
+ justify-items:center;
+ gap: 10px;
+}
+
+.Table
+{
+ border-radius:0px 0px 10px 10px;
+ padding: 10px;
+ background-color: #c0c0c0;
+
+ /*background-color: blue;*/
+ margin-left: auto;
+ margin-right: auto;
+ height: Calc(33vw + 50px);
+ overflow-y: scroll;
+ box-shadow: inset 0px 0px 10px 0px rgb(0 0 0 / 25%);
+}
+
+.tableNavPanel
+{
+ padding: 10px;
+ height: 2vh;
+ min-height: 30px;
+ border-radius:10px 10px 0px 0px;
+ margin-left: auto;
+ margin-right: auto;
+ background-color: #ed8b21;
+ width: Calc(60px + 50vw);
+ box-shadow: inset 0px 0px 10px 0px rgb(0 0 0 / 25%);
+}
+
+.resColumn
+{
+ width: 10vw;
+
+ display: flex;
+ flex-direction: column;
+ gap: 5px;
+
+
+}
+.reservationElement
+{
+ width: 10vw;
+ min-height: 50px;
+ border-radius: 10px;
+ box-shadow: inset 0px 0px 10px 0px rgb(0 0 0 / 25%);
+
+}
+.reservationElement p
+{
+ margin: 5px;
+}
+
+.reservedByUser
+{
+ background-color: rgb(237,139,33);
+}
+.reservedByUser:hover
+{
+ background-color: rgb(255,213,0);
+}
+
+.available
+{
+ background-color: rgb(161,195,81);
+}
+.available:hover
+{
+ background-color: rgb(47,179,232);
+}
+
+.reserved
+{
+background-color: gray;
+}
+.reserved:hover
+{
+ background-color: gray;
+}
+
+
+
+.header-logo
+{
+ -webkit-font-smoothing: antialiased;
+ -webkit-text-size-adjust: 100%;
+ text-align: right;
+ transition: background-color 0.3s ease;
+ margin: 0;
+ padding: 0;
+ border: 0;
+ font: inherit;
+ vertical-align: baseline;
+ height: 110px;
+ width: 100%;
+ background-position: left center;
+ background-size: contain;
+ background-repeat: no-repeat;
+ text-decoration: underline;
+ outline: 0;
+ color: #32b1e7;
+ background-image: url("../Assets/logo_lyceum.svg");
+ display: block;
+}
+.bannerPane
+{
+ width: 100%;
+ height: 10px;
+ background-color: #9fc151;
+
+
+ -webkit-font-smoothing: antialiased;
+ -webkit-text-size-adjust: 100%;
+ color: #808080;
+ text-align: left;
+ transition: background-color 0.3s ease;
+ margin: 0;
+ padding: 0;
+ border: 0;
+ font: inherit;
+ vertical-align: baseline;
+ min-height: 10px;
+ background-color: #ecf3dc;
+}
+.modal
+{
+ z-index: 100;
+ display:none;
+ position: fixed;
+ width: 80vw;
+ height: 80vh;
+ background-color: white;
+ border-radius: 10px;
+ left: 50%;
+ top: 5vh;
+ transform: translate(-50%,0);
+}
+.modalBackground
+{
+ z-index: 99;
+ display: none;
+ position: fixed;
+ width: 100%;
+ height: 100%;
+ background-color: rgba(0,0,0,80%);
+}
+.active
+{
+ display: block;
+}
+.modalPadding
+{
+ padding: 1vw;
+}
+
+
+.orangeBorder
+{
+  border-color:rgb(237,139,33);
+ border-width: 5px;
+ border-style: solid;
+}
+.greenBorder
+{
+ border-color:rgb(161,195,81);
+ border-width: 5px;
+ border-style: solid;
+}
+
+.infoPanel
+{
+ margin-top: 2vh;
+ display: flex;
+ flex-direction: row;
+ flex-wrap: wrap;
+ gap: 10px;
+ justify-content: space-between;
+}
+.textFieldDescription
+{
+ margin-top: 4vh;
+}
+.textFieldDescription h2
+{
+ text-align: center;
+}
+.modal h1
+{
+ text-align: center;
+}
+textarea
+{
+ resize: none;
+}
+.textField
+{
+ display: flex;
+ flex-direction: column;
+}
+
+.day
+{
+ text-align: center;
+ font-family: 'Montserrat', sans-serif;
+ font-weight: 600;
+ color:#808080;
+}
+
+@media (min-width: 425px) {
+ .modal
+ {
+  width:60vw;
+ }
+}
+@media (min-width: 768px) {
+ .modal
+ {
+  width: 40vw;
+ }
+}
+@media (min-width: 1440px) {
+ .modal
+ {
+  width: 30vw;
+ }
+}
+
+
+.Table::-webkit-scrollbar {
+ width: 20px;
+}
+
+.Table::-webkit-scrollbar-track {
+ box-shadow: inset 0 0 5px grey;
+ border-radius: 10px;
+ background-color:#c0c0c0;
+}
+
+.Table::-webkit-scrollbar-thumb {
+ background:#808080;
+ border-radius: 10px;
+}
