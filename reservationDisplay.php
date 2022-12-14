@@ -4,7 +4,14 @@ session_start();
 //$reservationList = [];
 //require_once 'dbConnect.php';
 /**@var  mysqli $db**/
-$currentUser = '1059516@hr.nl';
+if(isset($_SESSION["user"])) {
+    $currentUser =$_SESSION["user"];
+}
+else
+{
+    Header("Location:LogIn.php");
+    exit;
+}
 if(!isset($_GET["Teacher"])) {
     $currentTeacher = 1;
 }
@@ -142,10 +149,10 @@ else
 
 <div class="Center FlexColum">
     <div class="tableNavPanel FlexRow">
-        <div class="FlexRow">
-        <a href="?Teacher=<?=$currentTeacher?>&week=<?=$currentWeek-1?>">Previous</a>
+        <div class="FlexRow week">
+        <a class="weekToggle" href="?Teacher=<?=$currentTeacher?>&week=<?=$currentWeek-1?>"> < </a>
         <p> Week <?=$currentWeek?> </p>
-        <a href="?Teacher=<?=$currentTeacher?>&week=<?=$currentWeek+1?>">Next</a>
+        <a class="weekToggle" href="?Teacher=<?=$currentTeacher?>&week=<?=$currentWeek+1?>"> > </a>
         </div>
         <form action="" method="get" id="0">
             <select name="Teacher" id="Teacher" onchange="submitForm(0)">

@@ -34,12 +34,12 @@ mysqli_close($db);
 <body>
 <div class="modalPadding">
     <h1>Maak afspraak met <?=$teacher?></h1>
-    <form action="index.php" method="post">
+    <form action="index.php" method="post" id="1">
         <div class="infoPanel">
             <div class="textField">
                 <label for="email">Contact mail</label>
-                <input type="email" id="email" name="email" value=>
-                <p style="color: red"></p>
+                <input type="email" id="email" name="email" value="">
+                <p style="color: red" id="emailMessage"></p>
             </div>
         </div>
         <div class="textField">
@@ -49,8 +49,11 @@ mysqli_close($db);
         </div>
         <input type="hidden" name="id" value="<?=$id?>">
         <input type="hidden" name="day" value="<?=$day?>">
-        <input type="submit" name="submit" value="maak afspraak">
+        <input type="hidden" name="update" value="update">
+
+
     </form>
+    <button onclick="formmodalSubmitForm(1)">maak afspraak</button>
 </div>
 </body>
 </html>
