@@ -52,7 +52,6 @@ INSERT INTO `reservations` (`id`, `teacher`, `date`, `time`, `duration`, `user`,
 (19, 1, '2023-01-19', '12:00:00', 900, NULL, NULL, 'dhf'),
 (20, 1, '2023-01-17', '17:03:00', 1800, 4, ' ', 'dsgdgrs'),
 (21, 1, '2023-01-09', '15:06:00', 900, NULL, ' c', 'ds'),
-(23, 1, '2023-01-16', '13:10:00', 1800, 7, ' mijn kind is vervelend', 'dfsd'),
 (24, 1, '2023-01-20', '15:17:00', 900, NULL, NULL, 'dgs'),
 (25, 1, '2023-01-18', '15:21:00', 900, NULL, ' fftuy', 'gdgg');
 
@@ -99,8 +98,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `email`, `password`, `name`, `teacherID`) VALUES
 (4, 'tUser@gmail.com', '$2y$10$h90JRdlUo3Qyz2RTTDBwIuB9G81OqsKfF2A/aPCYN9wt2Y0fMrWEC', 'testUser', NULL),
 (5, 'teacher1@gmail.com', '$2y$10$nEsoh7GcxiJnJzEvyw.xXOpecBCEiBMAv6AZPlD.ijUbO2Vaduy8K', 'teacher1', 1),
-(6, 'teacher2@gmail.com', '$2y$10$nyqd0FkSwxxSdHFx7kYkP.hdtXFwrX3CNTkDNchLxLCJKOD3r.Go.', 'teacher2', 2),
-(7, 'carisia.botero@gmail.com', '$2y$10$xtWizXKmsR34bpUJm9nAJ.9d2ugq6wy1FPbfmEXvmzuxViabyQDaa', 'carisia', NULL);
+(6, 'teacher2@gmail.com', '$2y$10$nyqd0FkSwxxSdHFx7kYkP.hdtXFwrX3CNTkDNchLxLCJKOD3r.Go.', 'teacher2', 2);
 
 --
 -- Indeksy dla zrzutów tabel
