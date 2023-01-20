@@ -2,16 +2,24 @@
 session_start();
 //$db = $_SESSION["db"];
 //$reservationList = [];
-//require_once 'dbConnect.php';
+require_once 'dbConnect.php';
 /**@var  mysqli $db**/
+
+
+
+
+//retrives userdata from session
 if(isset($_SESSION["user"])) {
     $currentUser =$_SESSION["user"];
+    $userTeacherID = $_SESSION["userTeacherID"];
 }
+//if there is no user data redirects to login page
 else
 {
     Header("Location:LogIn.php");
     exit;
 }
+//retrives which teacher is currently set if none is set use teacher with id 1 (it can be done cleaner)
 if(!isset($_GET["Teacher"])) {
     $currentTeacher = 1;
 }
@@ -21,6 +29,7 @@ else
 }
 $_SESSION["Teacher"]=$currentTeacher;
 
+//retrives which week number to use defaults to current week number (it can be done cleaner)
 if(isset($_GET["week"])) {
     $currentWeek = max($_GET["week"] % 53,1);
     $_SESSION["week"]=$currentWeek;
@@ -37,15 +46,72 @@ else
 
 
 
+//used when teacher creates a new reservation possibility
+if(isset($_POST["create"]))
+{
+    $date = mysqli_escape_string($db,$_POST["date"]);
+    $time = mysqli_escape_string($db,$_POST["time"]);
+    $duration = $_POST["duration"]*60;
+    $location = mysqli_escape_string($db,$_POST["location"]);
+  //validate if everything was filled in correctly
+    $validation=true;
+    if($date=="")
+    {
+        $validation=false;
+    }
+    if($time=="")
+    {
+        $validation=false;
+    }
+    if(!is_numeric($duration)&&$duration<=0)
+    {
+        $validation=false;
+    }
+    if($location=="")
+    {
+        $validation=false;
+    }
+    //create reservation when validation is succesful.
+    if($validation)
+    {
+        mysqli_query($db,"INSERT INTO reservations (teacher,date,time,duration,location) VALUES ('$currentTeacher','$date','$time','$duration','$location')");
+    }
+}
+//used when teacher wants to remove reservation possibility
+if(isset($_POST["remove"]))
+{
+
+    $date = mysqli_escape_string($db,$_POST["date"]);
+    $time = mysqli_escape_string($db,$_POST["time"]);
+    //validate if everthing was filled correctly
+    $validation=true;
+    if($date=="")
+    {
+        $validation=false;
+    }
+    if($time=="")
+    {
+        $validation=false;
+    }
+    //delete reservation if validation is succesful
+    if($validation)
+    {
+        mysqli_query($db,"DELETE FROM reservations WHERE date='$date' AND time='$time' AND teacher='$currentTeacher' ");
+    }
+}
+    mysqli_close($db);
+
+//display all reservation for given day.
     function  displayBoxes($dayOfWeek, $week)
     {
         //@VAR $db;
+        //retrive reservations for given day
         require'dbConnect.php';
-        global $currentUser,$currentTeacher;
+        global $currentUser,$currentTeacher,$userTeacherID;
         $reservationList=[];
-        $dbGetReservationQuerry = "SELECT * FROM $dayOfWeek WHERE teacher ='$currentTeacher' AND week ='$week'";
+        $dbGetReservationQuerry =  "SELECT * FROM reservations WHERE teacher ='$currentTeacher' AND WEEK(date) = '$week' AND DAYOFWEEK(date)='$dayOfWeek'";
         $dbQuerryResult = mysqli_query($db,$dbGetReservationQuerry);
-
+        //create list of all reservations and sort them based on time.
         while ($row = mysqli_fetch_assoc($dbQuerryResult))
         {
             $reservationList[] = $row;
@@ -70,9 +136,13 @@ else
                 }
             }
         }
+        //loop through all reservation and sets their interaction buttons
         foreach ($reservationList as $reservation) {
            // $resDate = $reservation['date'];
-            $restime =  mb_strimwidth($reservation['time'],0,5);
+            $location = htmlentities($reservation['location']);
+            $restime =  mb_strimwidth(htmlentities($reservation['time']),0,5);
+            //sets height of the box based on reservation duration
+
 
             $resDuration = ($reservation['duration']/900)*6.6;
             $resDurationMult = $resDuration/6.6;
@@ -81,21 +151,25 @@ else
             $resDurationPX = "$resDurationGap"."px";
             $resDurationString = "Calc($resDurationVW + $resDurationPX)";
 
-            // $formatedDate = strtotime($resDate);
-            //  $resDay = date("w",$formatedDate);
-            //if($resDay==$dayOfWeek) {
+
+            //sets what schould happen when the user click on the box
+
+            //this is here to use $dayOfWeek as a javascript parameter
             $dayOfWeek = json_encode($dayOfWeek);
            // print_r($dayOfWeek);
                 $id = $reservation['id'];
-                if ($reservation['email'] == null) {
+                //when there is no user sets the box to be able to make its reservation.
+                if ($reservation['user'] == null) {
                     $jsFunction = "FormModalPopUP($id,$dayOfWeek)";
-                    echo "<div onclick='$jsFunction' class='available reservationElement' style='height:$resDurationString;'><p>avaiable $restime</p></div>";
+                    echo "<div onclick='$jsFunction' class='available reservationElement' style='height:$resDurationString;'><p>$restime $location<br> open</p></div>";
                 } else {
-                    if ($reservation['email'] == $currentUser) {
+                    //when the user is the same as current user or you are the corresponding teacher make the box view reservation info when clicked on
+                    if ($reservation['user'] == $currentUser || $currentTeacher==$userTeacherID) {
                         $jsFunction = "InfoModalPopUP($id,$dayOfWeek)";
-                        echo "<div onclick='$jsFunction' class='reservedByUser reservationElement' style='height:$resDurationString;'><p>your appoitment $restime</p></div>";
+                        echo "<div onclick='$jsFunction' class='reservedByUser reservationElement' style='height:$resDurationString;'><p>$restime $location<br> uw afspraak</p></div>";
+                    //otherwise make it do nothing
                     } else {
-                        echo "<div class='reserved reservationElement' style='height:$resDurationString;'><p>reserved $restime </p></div>";
+                        echo "<div class='reserved reservationElement' style='height:$resDurationString;'><p>$restime $location<br> bezet </p></div>";
                     }
                 }
                 $dayOfWeek = json_decode($dayOfWeek);
@@ -103,6 +177,7 @@ else
         }
         mysqli_close($db);
     }
+    //create teacher select dropdown menu from database teachers list.
     function changeTeacher()
     {
         global $currentTeacher;
@@ -121,8 +196,40 @@ else
                 echo "<option value='$tid'>$tpr</option>";
             }
         }
+        mysqli_close($db);
     }
-
+    //view a sidemenu with the ability to create and remove reservation possibilities if you are a teacher and are viewing yours reservations
+    function sideMenu()
+    {
+        $user = $_SESSION["user"];
+        global $currentTeacher, $userTeacherID;
+        if($currentTeacher==$userTeacherID)
+        {
+            echo "
+            <div class='sideMenu'>
+    <h2>Maak afspraak plek</h2>
+    <form method='post' action=''>
+        <label for='date'>datum</label>
+        <input type='date' id='date' name='date'>
+        <label for='time'>tijd</label>
+        <input type='time' id='time' name='time'>
+        <label for='duration'>afspraak lenghte</label>
+        <input type='number' id='duration' name='duration'>
+        <label for='location'>plek</label>
+        <input type='text' id='location' name='location'>
+        <input type='submit' name='create' value='maak plek'>
+    </form>
+    <h2>Verwijder afspraak plek</h2>
+    <form method='post' action=''>
+        <label for='date'>datum</label>
+        <input type='date' id='date' name='date'>
+        <label for='time'>tijd</label>
+        <input type='time' id='time' name='time'>
+        <input type='submit' name='remove' value='verwijder'>
+    </form>
+    </div>";
+        }
+    }
 ?>
 <!doctype html>
 <html lang="en">
@@ -136,19 +243,24 @@ else
 </head>
 <body>
 <script src="JS/ModalPopUp.js"></script>
-<script src="JS/DropSubmit.js"></script>
+<script src="JS/SubmitForm.js"></script>
 <div onclick="DisableModal()" id="modalBackground" class="modalBackground"></div>
 <div id="infoModal" class="modal orangeBorder"></div>
 <div id="formModal" class="modal greenBorder"></div>
 <header>
+    <div class="headerFlex">
     <a href="https://www.devosvlaardingen.nl/" id="HeaderLogo" class="logo header-logo"></a>
+    <a href="LogOut.php">uitmelden</a>
+    </div>
     <div class="bannerPane"></div>
+
 </header>
 
 
+<div class="Center FlexRow flexCenter">
+<?php sideMenu();?>
+<div class="FlexColum Shadow">
 
-
-<div class="Center FlexColum">
     <div class="tableNavPanel FlexRow">
         <div class="FlexRow week">
         <a class="weekToggle" href="?Teacher=<?=$currentTeacher?>&week=<?=$currentWeek-1?>"> < </a>
@@ -168,28 +280,29 @@ else
     <div class="Table FlexRow">
     <div class="resColumn">
         <p class="day">Maandag</p>
-        <?php displayBoxes("monday", $currentWeek);?>
+        <?php displayBoxes("2", $currentWeek);?>
     </div>
     <div class="resColumn">
         <p class="day">Dinsdag</p>
-        <?php displayBoxes("tuesday",$currentWeek);?>
+        <?php displayBoxes("3",$currentWeek);?>
     </div>
     <div class="resColumn">
         <p class="day">Woensdag</p>
-        <?php displayBoxes("wednesday",$currentWeek);?>
+        <?php displayBoxes("4",$currentWeek);?>
     </div>
     <div class="resColumn">
         <p class="day">Donderdag</p>
-        <?php displayBoxes("thursday",$currentWeek);?>
+        <?php displayBoxes("5",$currentWeek);?>
     </div>
     <div class="resColumn">
         <p class="day">Vrijdag</p>
-        <?php displayBoxes("friday",$currentWeek);?>
+        <?php displayBoxes("6",$currentWeek);?>
     </div>
     </div>
 </div>
-
-
-
+</div>
+<footer>
+    <p style="color:white"> footer </p>
+</footer>
 </body>
 </html>

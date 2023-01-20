@@ -1,19 +1,18 @@
 <?php
 /**@var  mysqli $db**/
+
+
+//make connection with database
 require_once "dbConnect.php";
+//get the data of the reservation you want to view(//It schould be made more secure because it allow now easy acces from the url)
 $id=$_GET["id"];
 $day = $_GET["day"];
-$result = mysqli_query($db,"SELECT * FROM $day WHERE id='$id' ");
+//get info about this reservation out of the database
+$result = mysqli_query($db,"SELECT * FROM reservations INNER JOIN teachers_list ON teachers_list.id=reservations.teacher WHERE reservations.id='$id'");
 $reservation = mysqli_fetch_row($result);
-//$date = $reservation[1];
-$time = mb_strimwidth($reservation[3],0,5);
-$teacherId = $reservation[2];
-$result = mysqli_query($db,"SELECT * FROM teachers_list WHERE id='$teacherId'");
-$teacherData = mysqli_fetch_row($result);
-$teacher = $teacherData[1];
-
-$description = $reservation[5];
-//$student = $reservation[6];
+$time = mb_strimwidth(htmlentities($reservation[3]),0,5);
+$teacher =htmlentities($reservation[8]);
+$description =htmlentities($reservation[6]);
 mysqli_close($db);
 ?>
 <!doctype html>

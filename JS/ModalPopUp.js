@@ -1,12 +1,15 @@
+
+//enable the info modal.
 function InfoModalPopUP(id,day)
 {
+    //make the modal visible
    let modal = document.getElementById("infoModal");
    modal.className+=" active orangeBorder";
 
     let modalBack = document.getElementById("modalBackground");
     modalBack.className+= " active"
 
-
+    //make a AJAX request to display content of infomodal.php inside the modal element.
     let xhtml = new XMLHttpRequest();
     xhtml.onreadystatechange= function ()
     {
@@ -19,12 +22,17 @@ function InfoModalPopUP(id,day)
     xhtml.open("GET", "infomodal.php?id="+id.toString()+"&day="+day,true);
     xhtml.send();
 }
+
+//enable the form modal.
 function FormModalPopUP(id,day)
 {
+    //make the modal visible
     let modal = document.getElementById("formModal");
     modal.className+=" active greenBorder";
     let modalBack = document.getElementById("modalBackground");
     modalBack.className+=" active"
+
+    //make a AJAX request to display content of formmodal.php inside the modal element.
     let xhtml = new XMLHttpRequest();
     xhtml.onreadystatechange= function ()
     {
@@ -36,6 +44,7 @@ function FormModalPopUP(id,day)
     xhtml.open("GET", "formmodal.php?id="+id.toString()+"&day="+day,true);
     xhtml.send();
 }
+//remove css classes from the modal elemnts that make them display on the screen
 function  DisableModal()
 {
     let imodal = document.getElementById("infoModal");

@@ -1,19 +1,22 @@
 <?php
 /**@var  mysqli $db**/
-
+//get the data of the reservation you want to make(//It schould be made more secure because it allow now easy acces from the url)
 if(isset($_GET["id"])) {
     $id = $_GET["id"];
     $day = $_GET["day"];
 }
+//data base connection
 require_once "dbConnect.php";
 
-$result = mysqli_query($db,"SELECT * FROM $day WHERE id='$id'");
+//get teacher name using join query.
+$result = mysqli_query($db,"SELECT * FROM reservations INNER JOIN teachers_list ON teachers_list.id=reservations.teacher WHERE reservations.id='$id'");
 $reservation = mysqli_fetch_row($result);
-
-$teacherId = $reservation[2];
-$result = mysqli_query($db,"SELECT * FROM teachers_list WHERE id='$teacherId'");
-$teacherData = mysqli_fetch_row($result);
-$teacher = $teacherData[1];
+session_start();
+$user = $_SESSION["user"];
+//$teacherId = $reservation[1];
+//$result = mysqli_query($db,"SELECT * FROM teachers_list WHERE id='$teacherId'");
+//$teacherData = mysqli_fetch_row($result);
+$teacher =htmlentities($reservation[8]);
 
 
 
@@ -37,9 +40,8 @@ mysqli_close($db);
     <form action="index.php" method="post" id="1">
         <div class="infoPanel">
             <div class="FlexRow">
-                <label for="email">Contact mail</label>
                 <div>
-                <input type="email" id="email" name="email" value="">
+                <input type="hidden" id="email" name="email" value="remove this">
                 <p style="color: red" id="emailMessage"></p>
                 </div>
             </div>
@@ -52,12 +54,13 @@ mysqli_close($db);
         <input type="hidden" name="id" value="<?=$id?>">
         <input type="hidden" name="day" value="<?=$day?>">
         <input type="hidden" name="update" value="update">
-
+        <input type ="hidden" name="user" value="<?=$user?>">
+        <input type = "submit" name="submit" class="DragDown ActieButton modalMargin Green" value="maak afspraak">
 
     </form>
 
 </div>
-<button class="DragDown ActieButton modalMargin Green" onclick="formmodalSubmitForm(1)">maak afspraak</button>
+
 </body>
 
 </html>
